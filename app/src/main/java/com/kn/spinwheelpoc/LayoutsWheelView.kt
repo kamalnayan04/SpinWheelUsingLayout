@@ -1,13 +1,16 @@
 package com.kn.spinwheelpoc
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
-import com.kn.spinwheelpoc.AngleView.AngleViewOutlineProvider
 import com.kn.spinwheelpoc.databinding.LayoutWheelViewsBinding
 import kotlin.random.Random
 
@@ -22,7 +25,7 @@ class LayoutsWheelView @JvmOverloads constructor(
 
 
     private val binding = LayoutWheelViewsBinding.inflate(LayoutInflater.from(context), this)
-    var itemCount = 6
+    var itemCount = 4
         set(value) {
             field = value
             setupItemViews()
@@ -32,8 +35,8 @@ class LayoutsWheelView @JvmOverloads constructor(
     init {
 
         this.setOnLongClickListener {
-            this.animate().rotation(5000f).setDuration(4000)
-                .setInterpolator(DecelerateInterpolator()).start()
+            this.rotation = 0f
+//            rotate()
             false
         }
     }
@@ -44,10 +47,12 @@ class LayoutsWheelView @JvmOverloads constructor(
             if (index < itemCount) {
                 item.apply {
                     isVisible = true
-                    rotation = getInitialAngle() + index * 360 / itemCount
+                    post { rotation = getInitialAngle() + index * 360 / itemCount }
                     item.setupBg {
-                        sweepDegree= 360f / itemCount
+
+                        this.sweepDegree = 360f / itemCount
                     }
+//                    item.setTriangleImage(sweepDegree, bgList.random())
                 }
             } else
                 item.isVisible = false
@@ -72,38 +77,85 @@ class LayoutsWheelView @JvmOverloads constructor(
             R.drawable.texture_yellow,
             R.drawable.texture_light_blue,
             R.drawable.texture_dark_blue,
-            R.drawable.texture_back,
         )
 
     fun setupItemViews() {
+        binding.wheelOverlay.totalItems = itemCount
         setItemsViewsRotationAndAngle()
         (0 until itemCount).forEach { index ->
             itemViews[index].apply {
                 setUpTitle {
                     text = "${getIndexText(index)} Wheel"
+                    setTextColor(
+                        Color.rgb(
+                            Random.nextInt(0, 255),
+                            Random.nextInt(0, 255),
+                            Random.nextInt(0, 255)
+                        )
+                    )
                 }
                 setupLogo {
                     setImageResource(logoList.random())
                 }
-                setupArcView {
-                    color = Color.rgb(
-                        Random.nextInt(0, 255),
-                        Random.nextInt(0, 255),
-                        Random.nextInt(0, 255)
-                    )
-                    outlineProvider = AngleViewOutlineProvider(path)
-                }
+
                 setupBg {
                     setImageResource(bgList.random())
-
                 }
             }
         }
     }
 
-    fun rotate() {
-        this.animate()
+    var target = 0
+
+    fun play() {
+      resetValues()
+        val rotateAnim =
+            ObjectAnimator.ofFloat(
+                binding.wheelContainer,
+                "rotation",
+                getRotationValueOfTarget(target)
+            ).apply {
+                duration = 5000
+                interpolator = DecelerateInterpolator()
+            }
+
+        val alphaAnim =
+            ObjectAnimator.ofFloat(
+                binding.wheelOverlay,
+                "alpha",
+                1f
+            ).apply {
+                doOnStart {
+                    binding.wheelOverlay.apply {
+                        isVisible = true
+
+                    }
+                }
+                duration = 800
+                interpolator = DecelerateInterpolator()
+            }
+
+        val animationSet = AnimatorSet()
+        animationSet.playSequentially(rotateAnim, alphaAnim)
+        animationSet.start()
+
     }
+
+    private fun resetValues() {
+        binding.wheelContainer.rotation = 0f
+        target = target.coerceIn(0, itemCount)
+        binding.wheelOverlay.apply {
+            isVisible = false
+            alpha = 0f
+        }
+    }
+
+    private fun getRotationValueOfTarget(target: Int): Float {
+        val sweepAngle: Float = (360 / itemCount).toFloat() // 60
+        val targetItemAngle: Float = getInitialAngle() + sweepAngle * (itemCount - target + 1)
+        return 360 * 9f + targetItemAngle
+    }
+
 
     private fun getIndexText(index: Int) = when (index) {
         0 -> "First"
@@ -128,5 +180,48 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     fun getInitialAngle() = -(360 / itemCount) / 2f
 
+    private var swipeX1: Float = 0F
+    private var swipeX2: Float = 0F
+    private var swipeY1: Float = 0F
+    private var swipeY2: Float = 0F
+    private var swipeDx: Float = 0F
+    private var swipeDy: Float = 0F
 
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
+
+
+
+
+        event?.let {
+            when (it.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    swipeX1 = it.x
+                    swipeY1 = it.y
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    swipeX2 = it.x
+                    swipeY2 = it.y
+
+                    swipeDx = swipeX2 - swipeX1
+                    swipeDy = swipeY2 - swipeY1
+
+//                            if (abs(swipeDx) > abs(swipeDy)) {
+//
+//                                if (swipeDx < 0 && abs(swipeDx) > swipeDistance) {
+//                                    rotateWheel()
+//                                }
+//                            } else {
+//                                if (swipeDy > 0 && abs(swipeDy) > swipeDistance) {
+//                                    rotateWheel()
+//                                }
+//                            }
+                }
+            }
+        }
+
+        return true
+    }
 }
+

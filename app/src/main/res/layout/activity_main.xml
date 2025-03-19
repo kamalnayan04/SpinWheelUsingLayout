@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.kn.spinwheelpoc.SpinWheel
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <com.kn.spinwheelpoc.LayoutsWheelView
         android:id="@+id/wheel_view"
         android:layout_width="0dp"
@@ -16,6 +27,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pointer_image"
+        android:layout_width="@dimen/dp0"
+        android:layout_height="@dimen/dp0"
+        app:layout_constraintHeight_max="55dp"
+        android:src="@drawable/pointer"
+        app:layout_constraintBottom_toTopOf="@id/wheel_view"
+        app:layout_constraintDimensionRatio="1:2"
+        app:layout_constraintEnd_toEndOf="@id/wheel_view"
+        app:layout_constraintStart_toStartOf="@id/wheel_view"
+        app:layout_constraintTop_toTopOf="@id/wheel_view" />
 
     <!--    <com.kn.spinwheelpoc.SpinWheel-->
     <!--        android:layout_width="0dp"-->
@@ -115,4 +138,13 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent"-->
     <!--        app:layout_constraintWidth_percent="0.75" />-->
+    <Button
+        android:id="@+id/btn_spin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Spin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wheel_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>

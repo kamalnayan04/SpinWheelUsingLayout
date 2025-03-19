@@ -35,6 +35,11 @@ class WheelItemView @JvmOverloads constructor(
         binding.bgImage.apply {
             action()
         }
+
+    }
+    fun setTriangleImage(degree:Float,image: Int){
+//        binding.triangle.sweepDegree=degree
+//        binding.bgTriangelImage.setImageResource(image)
     }
 
     fun clipBgImage() {

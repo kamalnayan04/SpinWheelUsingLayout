@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.kn.spinwheelpoc.databinding.ActivityMainBinding
-import kotlin.math.max
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,11 +26,21 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        binding.wheelView.setupItemViews()
-        binding.wheelView.setOnClickListener {
-            binding.wheelView.itemCount =
-                max(MIN_ITEMS_C0UNT, (binding.wheelView.itemCount + 1) % (MAX_ITEMS_C0UNT + 1)) // will be 0 when exceeds MAX_ITEMS_C0UNT then MIN will be set
+        binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
+        binding.btnSpin.setOnClickListener {
+
+            binding.wheelView.apply {
+                play()
+                target++
+                binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
+            }
         }
+        binding.wheelView.setupItemViews()
+        binding.wheelView.itemCount=4
+//        binding.wheelView.setOnClickListener {
+//            binding.wheelView.itemCount =
+//                max(MIN_ITEMS_C0UNT, (binding.wheelView.itemCount + 1) % (MAX_ITEMS_C0UNT + 1)) // will be 0 when exceeds MAX_ITEMS_C0UNT then MIN will be set
+//        }
     }
 
     private fun setupViews(spin: AngleView, index: Int) {

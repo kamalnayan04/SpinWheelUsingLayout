@@ -148,7 +148,7 @@ class SpinWheel @JvmOverloads constructor(
         super.onDraw(canvas)
 //        drawGlow(canvas)
         drawWheelBackground(canvas)
-        drawItemsWithColor(canvas)
+//        drawItemsWithColor(canvas)
         drawImages(canvas)
         drawCenterDot(canvas)
         drawLogo(canvas)
@@ -551,36 +551,6 @@ class SpinWheel @JvmOverloads constructor(
 //    }
 //
 
-
-    private fun updateBitmapSize(
-        mBitmap: Bitmap,
-        mBitmapDrawBounds: RectF,
-        mShaderMatrix: Matrix,
-        mBitmapShader: BitmapShader
-    ) {
-        if (mBitmap == null) return
-
-        val dx: Float
-        val dy: Float
-        val scale: Float
-
-        // scale up/down with respect to this view size and maintain aspect ratio
-        // translate bitmap position with dx/dy to the center of the image
-        if (mBitmap.getWidth() < mBitmap.getHeight()) {
-            scale = mBitmapDrawBounds.width() / mBitmap.getWidth()
-            dx = mBitmapDrawBounds.left
-            dy =
-                mBitmapDrawBounds.top - (mBitmap.getHeight() * scale / 2f) + (mBitmapDrawBounds.width() / 2f)
-        } else {
-            scale = mBitmapDrawBounds.height() / mBitmap.getHeight()
-            dx =
-                mBitmapDrawBounds.left - (mBitmap.getWidth() * scale / 2f) + (mBitmapDrawBounds.width() / 2f)
-            dy = mBitmapDrawBounds.top
-        }
-        mShaderMatrix.setScale(scale, scale)
-        mShaderMatrix.postTranslate(dx, dy)
-        mBitmapShader.setLocalMatrix(mShaderMatrix)
-    }
 
 
     private fun drawGlow(canvas: Canvas) {
