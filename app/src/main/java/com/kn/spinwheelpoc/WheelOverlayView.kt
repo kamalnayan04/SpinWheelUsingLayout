@@ -26,7 +26,7 @@ class WheelOverlayView @JvmOverloads constructor(
         style = Paint.Style.FILL
         isAntiAlias = true
         isDither = true
-        color = "#99000000".toColorInt() //"#B3000000"
+        color = "#B31B1B1B".toColorInt() //"#B3000000" 99000000
         maskFilter = BlurMaskFilter(30f, BlurMaskFilter.Blur.NORMAL)
     }
 

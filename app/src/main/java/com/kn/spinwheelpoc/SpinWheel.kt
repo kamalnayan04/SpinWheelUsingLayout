@@ -90,10 +90,7 @@ class SpinWheel @JvmOverloads constructor(
             "Free Pringles",
             intArrayOf(textColorList[Random.nextInt(8)])
         ),
-//        WheelData(R.drawable.blue),
-
-
-//        WheelData(R.drawable.radial)
+//
     )
     private val onClick: ((View) -> Unit) = {
         this.animate().rotation(3600f).setDuration(3000).setInterpolator(DecelerateInterpolator())

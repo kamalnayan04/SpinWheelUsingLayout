@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.wheelView.setupItemViews()
-        binding.wheelView.itemCount=4
+        binding.wheelView.itemCount = 6
 //        binding.wheelView.setOnClickListener {
 //            binding.wheelView.itemCount =
 //                max(MIN_ITEMS_C0UNT, (binding.wheelView.itemCount + 1) % (MAX_ITEMS_C0UNT + 1)) // will be 0 when exceeds MAX_ITEMS_C0UNT then MIN will be set

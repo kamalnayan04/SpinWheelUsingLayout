@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Point
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
@@ -34,7 +35,7 @@ class AngleView @JvmOverloads constructor(
         }
 
     val path = Path()
-
+    val arcStartPoint = Point()
     var sweepDegree: Float = 90f
         set(value) {
             field = value
@@ -54,7 +55,7 @@ class AngleView @JvmOverloads constructor(
             0f, 0f, width.toFloat(), height.toFloat()
         )
 
-        val startAngle = 270f - sweepDegree / 2//240f////180+ ((270 +( sweepDegree / 2)) -270)
+        val startAngle = 270f - sweepDegree / 2
         val sweepAngle = sweepDegree
         val startRadians = Math.toRadians(startAngle.toDouble())
         val endRadians = Math.toRadians((startAngle + sweepAngle).toDouble())
@@ -72,9 +73,12 @@ class AngleView @JvmOverloads constructor(
             lineTo(rect.centerX(), rect.centerY())
             close()
         }
-
+        paint.color = Color.RED
         canvas.drawPath(path, paint)
+        arcStartPoint.set(startX.toInt(), startY.toInt())
     }
+
+    fun getStartPoint() = arcStartPoint
 
     class AngleViewOutlineProvider(val path: Path) : ViewOutlineProvider() {
         override fun getOutline(p0: View?, p1: Outline?) {

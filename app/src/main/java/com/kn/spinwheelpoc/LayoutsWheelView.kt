@@ -1,12 +1,12 @@
 package com.kn.spinwheelpoc
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnStart
@@ -81,6 +81,10 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     fun setupItemViews() {
         binding.wheelOverlay.totalItems = itemCount
+        binding.dotsView.apply {
+            totalItems = itemCount
+        }
+        binding.glowView.totalItems = itemCount
         setItemsViewsRotationAndAngle()
         (0 until itemCount).forEach { index ->
             itemViews[index].apply {
@@ -128,7 +132,10 @@ class LayoutsWheelView @JvmOverloads constructor(
                 doOnStart {
                     binding.wheelOverlay.apply {
                         isVisible = true
-
+                    }
+                    binding.glowView.apply {
+                        showTopGlow = true
+                        hideWithAnimation()
                     }
                 }
                 duration = 800
@@ -142,6 +149,10 @@ class LayoutsWheelView @JvmOverloads constructor(
     }
 
     private fun resetValues() {
+        binding.glowView.apply {
+            showTopGlow = false
+            topMargin = 0f
+        }
         binding.wheelContainer.rotation = 0f
         target = target.coerceIn(0, itemCount)
         binding.wheelOverlay.apply {
@@ -180,48 +191,5 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     fun getInitialAngle() = -(360 / itemCount) / 2f
 
-    private var swipeX1: Float = 0F
-    private var swipeX2: Float = 0F
-    private var swipeY1: Float = 0F
-    private var swipeY2: Float = 0F
-    private var swipeDx: Float = 0F
-    private var swipeDy: Float = 0F
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
-
-
-
-
-        event?.let {
-            when (it.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    swipeX1 = it.x
-                    swipeY1 = it.y
-                }
-
-                MotionEvent.ACTION_UP -> {
-                    swipeX2 = it.x
-                    swipeY2 = it.y
-
-                    swipeDx = swipeX2 - swipeX1
-                    swipeDy = swipeY2 - swipeY1
-
-//                            if (abs(swipeDx) > abs(swipeDy)) {
-//
-//                                if (swipeDx < 0 && abs(swipeDx) > swipeDistance) {
-//                                    rotateWheel()
-//                                }
-//                            } else {
-//                                if (swipeDy > 0 && abs(swipeDy) > swipeDistance) {
-//                                    rotateWheel()
-//                                }
-//                            }
-                }
-            }
-        }
-
-        return true
-    }
 }
 

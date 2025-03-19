@@ -3,66 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/wheel_container"
+    <ImageView
+        android:id="@+id/pointer_image"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp0"
+        android:elevation="@dimen/dp4"
+        android:src="@drawable/pointer"
+        app:layout_constraintDimensionRatio="1:2"
+        app:layout_constraintEnd_toEndOf="@id/wheel_container"
+        app:layout_constraintHeight_max="55dp"
+        app:layout_constraintStart_toStartOf="@id/wheel_container"
+        app:layout_constraintTop_toTopOf="@id/wheel_container" />
+
+
+    <com.kn.spinwheelpoc.GlowView
+        android:id="@+id/glow_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wheel_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-
         <com.kn.spinwheelpoc.WheelItemView
             android:id="@+id/wheel_item_1"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="@id/rim_image"
-        app:layout_constraintDimensionRatio="1"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="@id/rim_image"
             app:layout_constraintStart_toStartOf="@id/rim_image"
             app:layout_constraintTop_toTopOf="@id/rim_image" />
 
 
-    <com.kn.spinwheelpoc.WheelItemView
-        android:id="@+id/wheel_item_2"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/rim_image"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="@id/rim_image"
-        app:layout_constraintStart_toStartOf="@id/rim_image"
-        app:layout_constraintTop_toTopOf="@id/rim_image" />
+        <com.kn.spinwheelpoc.WheelItemView
+            android:id="@+id/wheel_item_2"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/rim_image"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/rim_image"
+            app:layout_constraintStart_toStartOf="@id/rim_image"
+            app:layout_constraintTop_toTopOf="@id/rim_image" />
 
 
-    <com.kn.spinwheelpoc.WheelItemView
-        android:id="@+id/wheel_item_3"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/rim_image"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="@id/rim_image"
-        app:layout_constraintStart_toStartOf="@id/rim_image"
-        app:layout_constraintTop_toTopOf="@id/rim_image" />
+        <com.kn.spinwheelpoc.WheelItemView
+            android:id="@+id/wheel_item_3"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/rim_image"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/rim_image"
+            app:layout_constraintStart_toStartOf="@id/rim_image"
+            app:layout_constraintTop_toTopOf="@id/rim_image" />
 
 
-    <com.kn.spinwheelpoc.WheelItemView
-        android:id="@+id/wheel_item_4"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/rim_image"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="@id/rim_image"
-        app:layout_constraintStart_toStartOf="@id/rim_image"
-        app:layout_constraintTop_toTopOf="@id/rim_image" />
+        <com.kn.spinwheelpoc.WheelItemView
+            android:id="@+id/wheel_item_4"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
+            android:layout_margin="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/rim_image"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="@id/rim_image"
+            app:layout_constraintStart_toStartOf="@id/rim_image"
+            app:layout_constraintTop_toTopOf="@id/rim_image" />
 
         <com.kn.spinwheelpoc.WheelItemView
             android:id="@+id/wheel_item_5"
@@ -70,7 +91,7 @@
             android:layout_height="@dimen/dp0"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="@id/rim_image"
-        app:layout_constraintDimensionRatio="1"
+            app:layout_constraintDimensionRatio="1"
             app:layout_constraintEnd_toEndOf="@id/rim_image"
             app:layout_constraintStart_toStartOf="@id/rim_image"
             app:layout_constraintTop_toTopOf="@id/rim_image" />
@@ -78,8 +99,8 @@
 
         <com.kn.spinwheelpoc.WheelItemView
             android:id="@+id/wheel_item_6"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
             android:layout_margin="10dp"
             app:layout_constraintBottom_toBottomOf="@id/rim_image"
             app:layout_constraintDimensionRatio="1"
@@ -91,28 +112,45 @@
             android:layout_width="@dimen/dp36"
             android:layout_height="@dimen/dp36"
             android:src="@drawable/center_dot"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/rim_image"
-        android:layout_width="@dimen/dp0"
-        android:layout_height="@dimen/dp0"
+            android:layout_width="@dimen/dp0"
+            android:layout_height="@dimen/dp0"
             android:src="@drawable/rim"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.9" />
+
+        <com.kn.spinwheelpoc.DotsView
+            android:id="@+id/dots_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="1" />
+
+
+        />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.kn.spinwheelpoc.WheelOverlayView
         android:id="@+id/wheel_overlay"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        app:layout_constraintWidth_percent="0.94"
+        tools:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

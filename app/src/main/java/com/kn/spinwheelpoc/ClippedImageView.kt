@@ -3,11 +3,14 @@ package com.kn.spinwheelpoc
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Path
+import android.graphics.Point
+import android.graphics.PointF
 import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import kotlin.math.cos
 import kotlin.math.sin
+import androidx.core.graphics.withClip
 
 class ClippedImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -60,12 +63,11 @@ class ClippedImageView @JvmOverloads constructor(
 //        path.moveTo(centerX, bottomY) // Start at bottom center
 //        path.arcTo(rect, 180f, 180f, false) // Arc from left to right
 //        path.close() // Connect back to start
-
         // Clip the path before drawing the image
-        canvas.save()
-        canvas.clipPath(path)
-        super.onDraw(canvas)
-        canvas.restore()
+        canvas.withClip(path) {
+            super.onDraw(this)
+        }
+
     }
 
     /**
@@ -94,4 +96,7 @@ class ClippedImageView @JvmOverloads constructor(
      *         }
      *         canvas.drawPath(path, paint)
      */
+
+
+
 }
