@@ -1,21 +1,24 @@
 package com.kn.spinwheelpoc
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
 import com.kn.spinwheelpoc.databinding.LayoutWheelViewsBinding
+import kotlin.math.abs
 import kotlin.random.Random
 
 const val MIN_ITEMS_C0UNT = 4
 const val MAX_ITEMS_C0UNT = 6
+const val ROTATION_SENSITIVITY = .5f
 
 class LayoutsWheelView @JvmOverloads constructor(
     context: Context,
@@ -25,6 +28,8 @@ class LayoutsWheelView @JvmOverloads constructor(
 
 
     private val binding = LayoutWheelViewsBinding.inflate(LayoutInflater.from(context), this)
+
+
     var itemCount = 4
         set(value) {
             field = value
@@ -32,13 +37,71 @@ class LayoutsWheelView @JvmOverloads constructor(
             requestLayout()
         }
 
-    init {
 
-        this.setOnLongClickListener {
-            this.rotation = 0f
-//            rotate()
-            false
+    private var previousX = 0f
+    private var previousY = 0f
+
+
+    private var previousAngle = 0f
+    private var previousRadius = 0f
+    private var centerX = 0f
+    private var centerY = 0f
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (binding.wheelOverlay.isVisible)
+            return false
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                centerX = width / 2f
+                centerY = height / 2f
+                previousAngle = getAngle(event.x, event.y)
+                previousRadius = getRadius(event.x, event.y)
+            }
+
+            MotionEvent.ACTION_MOVE -> {
+                val currentAngle = getAngle(event.x, event.y)
+                val currentRadius = getRadius(event.x, event.y)
+
+                // Ensure the movement is circular by checking angle change and radius consistency
+                if (isCircularMotion(previousRadius, currentRadius)) {
+                    val deltaAngle = (currentAngle - previousAngle) * ROTATION_SENSITIVITY
+                    binding.wheelContainer.rotation += deltaAngle
+                    previousAngle = currentAngle
+                    previousRadius = currentRadius
+                }
+            }
         }
+        return true
+    }
+
+    /**
+     * Gets the angle of the touch point relative to the center of the wheel
+     */
+    private fun getAngle(x: Float, y: Float): Float {
+        val dx = x - centerX
+        val dy = y - centerY
+        return Math.toDegrees(kotlin.math.atan2(dy, dx).toDouble()).toFloat()
+    }
+
+    /**
+     * Calculates the distance (radius) from the center of the wheel to the touch point
+     */
+    private fun getRadius(x: Float, y: Float): Float {
+        val dx = x - centerX
+        val dy = y - centerY
+        return kotlin.math.sqrt(dx * dx + dy * dy)
+    }
+
+
+    /**
+     * Detects if the movement is circular by checking:
+     * 1. The radius (distance from center) remains relatively stable.
+     * 2. The touch moves in an angular fashion rather than randomly.
+     */
+    private fun isCircularMotion(prevRadius: Float, currentRadius: Float): Boolean {
+        val radiusChange = abs(currentRadius - prevRadius)
+        return radiusChange < 30
     }
 
     private fun setItemsViewsRotationAndAngle() {
