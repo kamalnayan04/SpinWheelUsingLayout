@@ -15,6 +15,7 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.PathInterpolator
 import androidx.collection.arraySetOf
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
 import com.kn.spinwheelpoc.databinding.LayoutWheelViewsBinding
@@ -193,9 +194,12 @@ class LayoutsWheelView @JvmOverloads constructor(
         Log.e("arrow_anim", "list = $dotAngleList")
     }
 
+    private var isAnimating = false
 
 
     fun play() {
+        if (isAnimating) return
+        isAnimating = true
         resetValues()
         val alphaAnim =
             ObjectAnimator.ofFloat(
@@ -211,6 +215,9 @@ class LayoutsWheelView @JvmOverloads constructor(
                         showTopGlow = true
                         hideWithAnimation()
                     }
+                }
+                doOnEnd {
+                    isAnimating = false
                 }
                 duration = 800
                 interpolator = DecelerateInterpolator()
@@ -249,7 +256,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         val speedUpRotationFrame =
             Keyframe.ofFloat(0.55f, (totalRotation * 0.76f))   // speed up to .55 rotations
         val speedDownRotationFrame =
-            Keyframe.ofFloat(0.99f, totalRotation)   // slow down last half rotation
+            Keyframe.ofFloat(0.985f, totalRotation)   // slow down last half rotation
         val rotateToFinalPositionFrame =
             Keyframe.ofFloat(1f, finalPosition)     // Bounce back to actual position
 
