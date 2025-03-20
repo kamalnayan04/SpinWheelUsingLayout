@@ -28,7 +28,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="@color/material_dynamic_primary10"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:visibility="gone"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Lets Go" />
     <!--    <com.kn.spinwheelpoc.SpinWheel-->
     <!--        android:layout_width="0dp"-->
     <!--        android:layout_height="0dp"-->
@@ -127,6 +140,25 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent"-->
     <!--        app:layout_constraintWidth_percent="0.75" />-->
+
+    <EditText
+        android:id="@+id/rotation_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/btn_rotate" />
+
+    <Button
+        android:id="@+id/btn_rotate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Rotate"
+        app:layout_constraintBottom_toTopOf="@id/btn_spin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wheel_view"
+        app:layout_constraintVertical_bias="1" />
+
     <Button
         android:id="@+id/btn_spin"
         android:layout_width="match_parent"
@@ -134,6 +166,5 @@
         android:text="Spin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wheel_view" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

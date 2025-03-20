@@ -9,12 +9,7 @@ import com.kn.spinwheelpoc.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var spin1: AngleView
-    private lateinit var spin2: AngleView
-    private lateinit var spin3: AngleView
-    private lateinit var spin4: AngleView
     private lateinit var binding: ActivityMainBinding
-//    private lateinit var spin1: AngleView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +30,45 @@ class MainActivity : AppCompatActivity() {
                 binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
             }
         }
-        binding.wheelView.setupItemViews()
-        binding.wheelView.itemCount = 6
+
+        binding.btnRotate.setOnClickListener {
+            val angle =
+                binding.rotationEdt.text.toString().takeIf { it.isNotBlank() }?.toIntOrNull() ?: 0
+            binding.wheelView.rotateByAngle(angle)
+        }
+
+        binding.wheelView.apply {
+            itemCount = 6
+            wheelListener = object : LayoutsWheelView.WheelListener {
+                override fun onRotationUpdated(
+                    rotation: Float,
+                    rotationCount: Float,
+                    rotationCompletionPercent: Float
+                ) {
+                    when {
+                        rotationCompletionPercent >= 99.9 -> {
+                            binding.statusText.text = "YOU WON!"
+                            return
+                        }
+
+                        rotationCompletionPercent.toInt() >= 90 -> {
+                            binding.statusText.text = "CLOSING IN..."
+                            return
+                        }
+
+                        rotationCompletionPercent.toInt() == 0 -> {
+                            binding.statusText.text = "LET'S GO!"
+                            return
+                        }
+
+                        else -> {
+                            binding.statusText.text = "SPIN & WIN"
+                        }
+                    }
+                }
+            }
+        }
+
 //        binding.wheelView.setOnClickListener {
 //            binding.wheelView.itemCount =
 //                max(MIN_ITEMS_C0UNT, (binding.wheelView.itemCount + 1) % (MAX_ITEMS_C0UNT + 1)) // will be 0 when exceeds MAX_ITEMS_C0UNT then MIN will be set
