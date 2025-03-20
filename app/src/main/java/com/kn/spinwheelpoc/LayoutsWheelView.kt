@@ -34,7 +34,7 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     private val binding = LayoutWheelViewsBinding.inflate(LayoutInflater.from(context), this)
 
-
+    private var lastAnimatedDot = Integer.MIN_VALUE
     var itemCount = 4
         set(value) {
             field = value
@@ -265,7 +265,6 @@ class LayoutsWheelView @JvmOverloads constructor(
         return keyframeSet
     }
 
-
     private fun onRotationValueUpdated(currentRotation: Float, rotatedManually: Boolean) {
         val threshold = 5 // Define how close the dot should be to start animation
         val adjustedRotation = (currentRotation % 360).toInt() // Normalize rotation to 0-360
@@ -278,7 +277,8 @@ class LayoutsWheelView @JvmOverloads constructor(
 
         dotAngleList.forEach { dotAngle ->
 
-            if (adjustedRotation + threshold == dotAngle) {
+            if (adjustedRotation in (dotAngle - threshold)..(dotAngle + threshold) && lastAnimatedDot != dotAngle) {
+                lastAnimatedDot = dotAngle
                 animateArrow(speedMultiplier = rotationCount)
             }
         }
