@@ -52,8 +52,9 @@ class LayoutsWheelView @JvmOverloads constructor(
     private var centerY = 0f
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (binding.wheelOverlay.isVisible)
-            return false
+        return false
+        if (binding.wheelOverlay.isVisible) return false
+
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -199,7 +200,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         val alphaAnim =
             ObjectAnimator.ofFloat(
                 binding.wheelOverlay,
-                "alpha",
+                ALPHA,
                 1f
             ).apply {
                 doOnStart {
@@ -216,6 +217,25 @@ class LayoutsWheelView @JvmOverloads constructor(
             }
 
 
+        val propertyValueAnimator =
+            ValueAnimator.ofPropertyValuesHolder(getRotationAnimationKeyFrameSet()).apply {
+            duration = rotationDuration
+                interpolator = PathInterpolator(0.15f, 0.7f, 0.65f, 1f)
+            addUpdateListener {
+                val updatedValue = (it.animatedValue as Float)
+                Log.d("arrow_anim","animation = $updatedValue")
+                binding.wheelContainer.rotation = updatedValue
+                onRotationValueUpdated(updatedValue, false)
+            }
+        }
+
+
+        val rotationAnimationSet = AnimatorSet()
+        rotationAnimationSet.playSequentially(propertyValueAnimator, alphaAnim)
+        rotationAnimationSet.start()
+    }
+
+    private fun getRotationAnimationKeyFrameSet(): PropertyValuesHolder {
         val totalRotation =
             (360 * WHEEL_ROTATION_COUNT) + getRotationValueOfTarget(target).toFloat() + abs(
                 getInitialAngle()
@@ -224,11 +244,12 @@ class LayoutsWheelView @JvmOverloads constructor(
             (360 * WHEEL_ROTATION_COUNT) + getRotationValueOfTarget(target).toFloat()   // Slight bounce-back position
 
         val startFrame = Keyframe.ofFloat(0f, 0f)                // Start at 0°
-        val rotateLeftFrame = Keyframe.ofFloat(0.2f, getInitialAngle())                // go to left
+        val rotateLeftFrame =
+            Keyframe.ofFloat(0.15f, getInitialAngle())                // go to left
         val speedUpRotationFrame =
-            Keyframe.ofFloat(0.5f, totalRotation / 2)   // speed up to half rotations
+            Keyframe.ofFloat(0.55f, (totalRotation * 0.76f))   // speed up to .55 rotations
         val speedDownRotationFrame =
-            Keyframe.ofFloat(0.98f, totalRotation)   // slow down till last half
+            Keyframe.ofFloat(0.99f, totalRotation)   // slow down last half rotation
         val rotateToFinalPositionFrame =
             Keyframe.ofFloat(1f, finalPosition)     // Bounce back to actual position
 
@@ -241,30 +262,11 @@ class LayoutsWheelView @JvmOverloads constructor(
                 speedDownRotationFrame,
                 rotateToFinalPositionFrame
             )
-
-        val propertyValueAnimator = ValueAnimator.ofPropertyValuesHolder(keyframeSet).apply {
-            duration = rotationDuration
-            interpolator = PathInterpolator(0.1f, 0.8f, 0.5f, 1f)
-            addUpdateListener {
-                val updatedValue = (it.animatedValue as Float)
-                binding.wheelContainer.rotation = updatedValue
-                onRotationValueUpdated(updatedValue, false)
-            }
-        }
-
-
-        val rotationAnimationSet = AnimatorSet()
-        rotationAnimationSet.playSequentially(propertyValueAnimator, alphaAnim)
-        rotationAnimationSet.start()
-//        val animationSet = AnimatorSet()
-//        animationSet.playSequentially(rotationValueAnimator, alphaAnim)
-//        animationSet.start()
-
+        return keyframeSet
     }
 
 
     private fun onRotationValueUpdated(currentRotation: Float, rotatedManually: Boolean) {
-
         val threshold = 5 // Define how close the dot should be to start animation
         val adjustedRotation = (currentRotation % 360).toInt() // Normalize rotation to 0-360
         val rotationCount = (currentRotation / 360)// Normalize rotation to 0-360
@@ -274,22 +276,12 @@ class LayoutsWheelView @JvmOverloads constructor(
             getRotationCompletionPercent(currentRotation)
         )
 
-//        if (isPointerAnimating)
-//            return
         dotAngleList.forEach { dotAngle ->
 
             if (adjustedRotation + threshold == dotAngle) {
-
                 animateArrow(speedMultiplier = rotationCount)
-                Log.d(
-                    "arrow_anim",
-                    " animating arrow with => dot angle = $dotAngle adjustedRotation = $adjustedRotation dotAngle = $dotAngle  abs(adjustedRotation - dotAngle) = ${
-                        abs(adjustedRotation - dotAngle)
-                    }  threshold = $threshold"
-                )
             }
         }
-
     }
 
     private fun getRotationCompletionPercent(currentRotation: Float): Float {

@@ -25,11 +25,6 @@ class WheelItemView @JvmOverloads constructor(
         binding.logoImage.apply { action() }
     }
 
-    fun setupArcView(action: AngleView.() -> Unit) {
-//        binding.sliceView.apply {
-//            action()
-//        }
-    }
 
     fun setupBg(action: ClippedImageView.() -> Unit) {
         binding.bgImage.apply {
@@ -37,13 +32,5 @@ class WheelItemView @JvmOverloads constructor(
         }
 
     }
-    fun setTriangleImage(degree:Float,image: Int){
-//        binding.triangle.sweepDegree=degree
-//        binding.bgTriangelImage.setImageResource(image)
-    }
 
-    fun clipBgImage() {
-//        binding.bgImage.outlineProvider = binding.sliceView.outlineProvider
-        binding.bgImage.clipToOutline = true
-    }
 }
