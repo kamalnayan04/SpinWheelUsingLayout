@@ -54,7 +54,7 @@ class GlowView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (showTopGlow) drawTopGlowArc(canvas)
-        else drawGlow(canvas)
+        drawGlow(canvas)
     }
 
     private fun drawTopGlowArc(canvas: Canvas) {
@@ -84,12 +84,24 @@ class GlowView @JvmOverloads constructor(
     }
 
     private fun drawGlow(canvas: Canvas) {
-        canvas.drawCircle(
-            centerOfWheel,
-            centerOfWheel,
-            glowRadius,
-            glowingPaint
-        )
+        if (showTopGlow) {
+            val sweepAngle = 360f / totalItems
+            val radius = wheelRadius - (glowWidth + padding * 0.45).toInt()-topMargin
+            val itemArc = RectF(
+                centerOfWheel - radius,
+                centerOfWheel - radius,
+                centerOfWheel + radius,
+                centerOfWheel + radius
+            )
+            canvas.drawArc(itemArc, 270 + (sweepAngle / 2), 360-sweepAngle, true, glowingPaint)
+        }
+        else
+            canvas.drawCircle(
+                centerOfWheel,
+                centerOfWheel,
+                glowRadius,
+                glowingPaint
+            )
     }
 
     fun hideWithAnimation(onAnimationEnd: () -> Unit = {}) {

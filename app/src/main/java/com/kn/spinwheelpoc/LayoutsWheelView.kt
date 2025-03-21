@@ -150,6 +150,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         listOf(
             R.drawable.texture_gold,
             R.drawable.texture_light_blue,
+            R.drawable.texture_yellow,
             R.drawable.texture_dark_blue,
         )
 
@@ -181,7 +182,7 @@ class LayoutsWheelView @JvmOverloads constructor(
                 }
 
                 setupBg {
-                    setImageResource(bgList.random())
+                    setImageResource(bgList[(0+index)%bgList.size])
                 }
             }
         }
