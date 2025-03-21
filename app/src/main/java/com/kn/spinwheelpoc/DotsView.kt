@@ -1,5 +1,6 @@
 package com.kn.spinwheelpoc
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -7,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import androidx.annotation.DrawableRes
 import kotlin.math.cos
 import kotlin.math.min
@@ -27,7 +29,8 @@ class DotsView @JvmOverloads constructor(
     private var margin = 25
     private var wheelRadius: Float = 0F
     private var centerOfWheel: Float = 0F
-
+    val pointSize = resources.getDimensionPixelSize(R.dimen.dp36)
+    var finalPointSize = 0
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -65,8 +68,8 @@ class DotsView @JvmOverloads constructor(
 
     fun getInitialAngle() = 270 - (360 / totalItems)
     private fun drawPointsOverRim(canvas: Canvas) {
-        val pointSize = resources.getDimensionPixelSize(R.dimen.dp36)
-        val bitmap = getOptimizedBitmap(R.drawable.glare, pointSize) ?: return
+
+        val bitmap = getOptimizedBitmap(R.drawable.glare, finalPointSize) ?: return
 
         val totalPointsCount = totalItems
         val angleStep = 360f / totalPointsCount
@@ -77,10 +80,10 @@ class DotsView @JvmOverloads constructor(
             val pointY = centerOfWheel + (wheelRadius - (margin + pointSize/2)) * sin(angle)
 
             val pointRect = Rect(
-                (pointX - pointSize / 2).toInt(),
-                (pointY - pointSize / 2).toInt(),
-                (pointX + pointSize / 2).toInt(),
-                (pointY + pointSize / 2).toInt(),
+                (pointX - finalPointSize / 2).toInt(),
+                (pointY - finalPointSize / 2).toInt(),
+                (pointX + finalPointSize / 2).toInt(),
+                (pointY + finalPointSize / 2).toInt(),
             )
             canvas.drawBitmap(bitmap, null, pointRect, null)
         }
@@ -113,5 +116,17 @@ class DotsView @JvmOverloads constructor(
         options.inJustDecodeBounds = false
         options.inSampleSize = inSampleSize
         return BitmapFactory.decodeResource(context.resources, res, options)
+    }
+
+    fun animateDots() {
+        val animator =
+            ValueAnimator.ofInt(pointSize / 2, pointSize)
+        animator.duration = 800
+        animator.interpolator = AccelerateInterpolator()
+        animator.addUpdateListener {
+            finalPointSize = it.animatedValue as Int
+            invalidate()
+        }
+        animator.start()
     }
 }

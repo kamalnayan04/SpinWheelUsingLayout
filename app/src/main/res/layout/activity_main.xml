@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <com.kn.spinwheelpoc.SpinWheel
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -17,9 +18,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.kn.spinwheelpoc.WheelLoadingView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/wheel_loading"
+        android:visibility="gone"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.kn.spinwheelpoc.LayoutsWheelView
         android:id="@+id/wheel_view"
+        android:visibility="visible"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,113 +46,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:textColor="@color/material_dynamic_primary10"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:fontFamily="sans-serif"
-        android:visibility="gone"
+        android:visibility="visible"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Lets Go" />
-    <!--    <com.kn.spinwheelpoc.SpinWheel-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1:1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <com.kn.spinwheelpoc.WheelItemView-->
-    <!--        android:layout_width="@dimen/dp0"-->
-    <!--        android:layout_height="@dimen/dp0"-->
-    <!--        android:id="@+id/wheel_item_1"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-    <!--    <com.kn.spinwheelpoc.WheelItemView-->
-    <!--        android:layout_width="@dimen/dp0"-->
-    <!--        android:layout_height="@dimen/dp0"-->
-    <!--        android:id="@+id/wheel_item_2"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-    <!--    <com.kn.spinwheelpoc.WheelItemView-->
-    <!--        android:layout_width="@dimen/dp0"-->
-    <!--        android:layout_height="@dimen/dp0"-->
-    <!--        android:id="@+id/wheel_item_3"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-    <!--    <com.kn.spinwheelpoc.WheelItemView-->
-    <!--        android:layout_width="@dimen/dp0"-->
-    <!--        android:layout_height="@dimen/dp0"-->
-    <!--        android:id="@+id/wheel_item_4"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--    <com.kn.spinwheelpoc.AngleView-->
-    <!--        android:id="@+id/spin1"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        -->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintWidth_percent="0.75" />-->
-
-    <!--    <com.kn.spinwheelpoc.AngleView-->
-    <!--        android:id="@+id/spin2"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        -->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintWidth_percent="0.75" />-->
-
-    <!--    <com.kn.spinwheelpoc.AngleView-->
-    <!--        android:id="@+id/spin3"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintWidth_percent="0.75" />-->
-
-
-    <!--    <com.kn.spinwheelpoc.AngleView-->
-    <!--        android:id="@+id/spin4"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintDimensionRatio="1"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:layout_constraintWidth_percent="0.75" />-->
 
     <EditText
         android:id="@+id/rotation_edt"
@@ -147,14 +62,26 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/btn_rotate" />
 
-    <Button
-        android:id="@+id/btn_rotate"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="#B1B0B0"
+        app:layout_constraintBottom_toBottomOf="@id/btn_rotate"
+        app:layout_constraintEnd_toEndOf="@id/btn_rotate"
+        app:layout_constraintHeight_percent="0.14"
+        app:layout_constraintStart_toStartOf="@id/btn_rotate"
+        app:layout_constraintTop_toTopOf="@id/btn_rotate" />
 
+    <com.kn.spinwheelpoc.button.ThreeDGlowingButton
+        android:id="@+id/btn_rotate"
+        android:layout_height="wrap_content"
         android:text="Rotate"
+        android:layout_width="0dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@null"
         app:layout_constraintBottom_toTopOf="@id/btn_spin"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/wheel_view"
         app:layout_constraintVertical_bias="1" />
@@ -164,7 +91,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Spin"
+        android:layout_marginBottom="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

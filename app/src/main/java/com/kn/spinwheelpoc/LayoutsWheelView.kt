@@ -13,8 +13,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.PathInterpolator
+import androidx.annotation.IntDef
 import androidx.collection.arraySetOf
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
@@ -147,7 +149,6 @@ class LayoutsWheelView @JvmOverloads constructor(
     private val bgList =
         listOf(
             R.drawable.texture_gold,
-            R.drawable.texture_yellow,
             R.drawable.texture_light_blue,
             R.drawable.texture_dark_blue,
         )
@@ -158,6 +159,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         binding.wheelOverlay.totalItems = itemCount
         binding.dotsView.apply {
             totalItems = itemCount
+            animateDots()
         }
         binding.glowView.totalItems = itemCount
         setItemsViewsRotationAndAngle()
@@ -199,6 +201,10 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     fun play() {
         if (isAnimating) return
+        binding.dotsView.apply {
+            animateDots()
+        }
+//        return
         isAnimating = true
         resetValues()
         val alphaAnim =
@@ -227,7 +233,17 @@ class LayoutsWheelView @JvmOverloads constructor(
         val propertyValueAnimator =
             ValueAnimator.ofPropertyValuesHolder(getRotationAnimationKeyFrameSet()).apply {
             duration = rotationDuration
-                interpolator = PathInterpolator(0.15f, 0.7f, 0.65f, 1f)
+                interpolator = PathInterpolator(0.15f, 1f, 0.8f, 1f)
+                doOnStart {
+                    wheelListener?.onRotationStatusChanged(RotationStatus.ROTATION_STARTED)
+                }
+                doOnEnd {
+                    wheelListener?.onRotationStatusChanged(RotationStatus.ROTATION_COMPLETED)
+                }
+                doOnCancel {
+                    wheelListener?.onRotationStatusChanged(RotationStatus.ROTATION_CANCELLED)
+                }
+
             addUpdateListener {
                 val updatedValue = (it.animatedValue as Float)
                 Log.d("arrow_anim","animation = $updatedValue")
@@ -254,9 +270,11 @@ class LayoutsWheelView @JvmOverloads constructor(
         val rotateLeftFrame =
             Keyframe.ofFloat(0.15f, getInitialAngle())                // go to left
         val speedUpRotationFrame =
-            Keyframe.ofFloat(0.55f, (totalRotation * 0.76f))   // speed up to .55 rotations
-        val speedDownRotationFrame =
-            Keyframe.ofFloat(0.985f, totalRotation)   // slow down last half rotation
+            Keyframe.ofFloat(0.55f, (totalRotation * 0.85f)) // Speed up smoothly
+        val slowDownRotationFrame =
+            Keyframe.ofFloat(0.85f, (totalRotation * 0.96f)) // Slow down earlier
+        val verySlowEndFrame =
+            Keyframe.ofFloat(0.98f, (totalRotation * 1f)) // Almost final, very slow
         val rotateToFinalPositionFrame =
             Keyframe.ofFloat(1f, finalPosition)     // Bounce back to actual position
 
@@ -266,7 +284,7 @@ class LayoutsWheelView @JvmOverloads constructor(
                 startFrame,
                 rotateLeftFrame,
                 speedUpRotationFrame,
-                speedDownRotationFrame,
+                slowDownRotationFrame, verySlowEndFrame,
                 rotateToFinalPositionFrame
             )
         return keyframeSet
@@ -369,6 +387,26 @@ class LayoutsWheelView @JvmOverloads constructor(
             rotationCount: Float,
             rotationCompletionPercent: Float
         )
+
+        fun onRotationStatusChanged(@RotationStatus rotationStatus: Int)
     }
+
+    @Retention(AnnotationRetention.SOURCE)
+    @IntDef(
+        RotationStatus.ROTATION_IDLE,
+        RotationStatus.ROTATION_STARTED,
+        RotationStatus.ROTATION_COMPLETED,
+        RotationStatus.ROTATION_CANCELLED,
+    )
+    annotation class RotationStatus {
+
+        companion object {
+            const val ROTATION_IDLE = 0
+            const val ROTATION_STARTED = 1
+            const val ROTATION_COMPLETED = 2
+            const val ROTATION_CANCELLED = -1
+        }
+    }
+
 }
 

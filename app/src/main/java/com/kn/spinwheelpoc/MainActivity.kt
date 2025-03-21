@@ -1,10 +1,14 @@
 package com.kn.spinwheelpoc
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import com.kn.spinwheelpoc.LayoutsWheelView.RotationStatus
 import com.kn.spinwheelpoc.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -21,14 +25,16 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        this.window.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
         binding.btnSpin.setOnClickListener {
-
+            if (binding.wheelView.isVisible)
             binding.wheelView.apply {
                 play()
                 target++
                 binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
-            }
+            }else
+                binding.wheelLoading.startAnimating()
         }
 
         binding.btnRotate.setOnClickListener {
@@ -38,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.wheelView.apply {
-            itemCount = 6
+            itemCount = 5
             wheelListener = object : LayoutsWheelView.WheelListener {
                 override fun onRotationUpdated(
                     rotation: Float,
@@ -46,23 +52,22 @@ class MainActivity : AppCompatActivity() {
                     rotationCompletionPercent: Float
                 ) {
                     when {
-                        rotationCompletionPercent >= 99.9 -> {
-                            binding.statusText.text = "YOU WON!"
-                            return
-                        }
 
                         rotationCompletionPercent.toInt() >= 90 -> {
                             binding.statusText.text = "CLOSING IN..."
                             return
                         }
+                    }
+                }
 
-                        rotationCompletionPercent.toInt() == 0 -> {
+                override fun onRotationStatusChanged(rotationStatus: Int) {
+                    when (rotationStatus) {
+                        RotationStatus.ROTATION_STARTED -> {
                             binding.statusText.text = "LET'S GO!"
-                            return
                         }
 
-                        else -> {
-                            binding.statusText.text = "SPIN & WIN"
+                        RotationStatus.ROTATION_COMPLETED -> {
+                            binding.statusText.text = "YOU WON!"
                         }
                     }
                 }

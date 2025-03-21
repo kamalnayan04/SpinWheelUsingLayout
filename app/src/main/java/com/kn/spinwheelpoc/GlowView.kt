@@ -10,7 +10,6 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import androidx.core.animation.doOnEnd
 import kotlin.math.min
 
@@ -54,10 +53,8 @@ class GlowView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (showTopGlow)
-            drawTopGlowArc(canvas)
-
-        drawGlow(canvas)
+        if (showTopGlow) drawTopGlowArc(canvas)
+        else drawGlow(canvas)
     }
 
     private fun drawTopGlowArc(canvas: Canvas) {
