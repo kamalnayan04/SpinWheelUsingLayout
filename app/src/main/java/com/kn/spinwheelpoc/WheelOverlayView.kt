@@ -17,6 +17,7 @@ class WheelOverlayView @JvmOverloads constructor(
         const val OVERLAY_TYPE_FULL = 1
         const val OVERLAY_TYPE_PARTIAL = 0
         private const val DEFAULT_OVERLAY_COLOR = "#B31B1B1B"
+        const val ERROR_OVERLAY_COLOR = "#b3e9e2c9"
 
     }
 
@@ -54,7 +55,7 @@ class WheelOverlayView @JvmOverloads constructor(
 
     private var radius = 0f
     private var center = 0f
-
+    private val rect = RectF()
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -64,7 +65,6 @@ class WheelOverlayView @JvmOverloads constructor(
         setMeasuredDimension(minDimen, minDimen)
 
     }
-    private val rect = RectF()
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

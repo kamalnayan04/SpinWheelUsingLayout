@@ -86,7 +86,7 @@ class GlowView @JvmOverloads constructor(
     private fun drawGlow(canvas: Canvas) {
         if (showTopGlow) {
             val sweepAngle = 360f / totalItems
-            val radius = wheelRadius - (glowWidth + padding * 0.45).toInt()-topMargin
+            val radius = wheelRadius - (glowWidth + padding * 0.45).toInt() - topMargin
             val itemArc = RectF(
                 centerOfWheel - radius,
                 centerOfWheel - radius,

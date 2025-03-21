@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             binding.wheelView.apply {
                 play()
                 target++
+                if (target==binding.wheelView.itemCount)
+                    target=INVALID_TARGET
                 binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
             }else
                 binding.wheelLoading.startAnimating()

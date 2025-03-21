@@ -19,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnCancel
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import androidx.core.graphics.toColorInt
 import androidx.core.view.isVisible
 import com.kn.spinwheelpoc.databinding.LayoutWheelViewsBinding
 import kotlin.math.abs
@@ -28,6 +29,7 @@ const val MIN_ITEMS_C0UNT = 4
 const val MAX_ITEMS_C0UNT = 6
 const val ROTATION_SENSITIVITY = .5f
 const val WHEEL_ROTATION_COUNT = 9
+const val INVALID_TARGET = -1
 class LayoutsWheelView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -47,6 +49,23 @@ class LayoutsWheelView @JvmOverloads constructor(
 
 
     var target = 0
+        set(value) {
+            field = value
+            if (value == INVALID_TARGET) {
+                handleInvalidTarget()
+            }
+        }
+
+    private fun handleInvalidTarget() {
+        binding.wheelOverlay.apply {
+            overlayColor = WheelOverlayView.ERROR_OVERLAY_COLOR.toColorInt()
+            overlayType = WheelOverlayView.OVERLAY_TYPE_FULL
+            isVisible = true
+            margin=25f
+            animate().alpha(1f).withStartAction { alpha = 0f }.setDuration(1000).start()
+        }
+    }
+
     var rotationDuration = 12000L
     var wheelListener: WheelListener? = null
     private var previousAngle = 0f
