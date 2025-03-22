@@ -24,13 +24,13 @@ class WheelOverlayView @JvmOverloads constructor(
     var totalItems = 6
         set(value) {
             field = value
-            postInvalidate()
+            invalidate()
         }
 
     var margin = 0f
         set(value) {
             field = value
-            postInvalidate()
+            invalidate()
         }
 
     var overlayColor = DEFAULT_OVERLAY_COLOR.toColorInt()

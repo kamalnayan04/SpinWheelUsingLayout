@@ -24,7 +24,6 @@
         android:layout_height="0dp"
         android:id="@+id/wheel_loading"
         android:visibility="gone"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"

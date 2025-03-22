@@ -33,7 +33,7 @@ class GlowView @JvmOverloads constructor(
     var showTopGlow = false
         set(value) {
             field = value
-            postInvalidate()
+            invalidate()
         }
 
     private val glowingPaint = Paint().apply {

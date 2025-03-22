@@ -2,8 +2,6 @@ package com.kn.spinwheelpoc
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
@@ -38,17 +36,21 @@ class MainActivity : AppCompatActivity() {
                     target=INVALID_TARGET
                 binding.btnSpin.setText("Spin to ${binding.wheelView.target+1}")
             }else
-                binding.wheelLoading.startAnimating()
+                binding.wheelLoading.apply {
+                    isVisible = true
+                    startAnimating()
+                }
         }
 
         binding.btnRotate.setOnClickListener {
+            binding.wheelView.itemCount = (binding.wheelView.itemCount + 1)
             val angle =
                 binding.rotationEdt.text.toString().takeIf { it.isNotBlank() }?.toIntOrNull() ?: 0
             binding.wheelView.rotateByAngle(angle)
         }
 
         binding.wheelView.apply {
-            itemCount = 5
+            itemCount = 4
             wheelListener = object : LayoutsWheelView.WheelListener {
                 override fun onRotationUpdated(
                     rotation: Float,
@@ -67,12 +69,12 @@ class MainActivity : AppCompatActivity() {
                 override fun onRotationStatusChanged(rotationStatus: Int) {
                     when (rotationStatus) {
                         RotationStatus.ROTATION_STARTED -> {
-//                            binding.btnSpin.visbility=View.GONE
+                            binding.btnSpin.isVisible = false
                             binding.statusText.text = "LET'S GO!"
                         }
 
                         RotationStatus.ROTATION_COMPLETED -> {
-//                            binding.btnSpin.visbility=View.VISIBLE
+                            binding.btnSpin.isVisible = true
                             binding.statusText.text = "YOU WON!"
                         }
                     }

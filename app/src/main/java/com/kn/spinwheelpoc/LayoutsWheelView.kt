@@ -61,7 +61,7 @@ class LayoutsWheelView @JvmOverloads constructor(
             overlayColor = WheelOverlayView.ERROR_OVERLAY_COLOR.toColorInt()
             overlayType = WheelOverlayView.OVERLAY_TYPE_FULL
             isVisible = true
-            margin=25f
+            margin = 25f
             animate().alpha(1f).withStartAction { alpha = 0f }.setDuration(1000).start()
         }
     }
@@ -227,18 +227,14 @@ class LayoutsWheelView @JvmOverloads constructor(
             animateDots()
         }
         resetValues()
-        val alphaAnim =
+        val offerRevealAlphaAnim =
             ObjectAnimator.ofFloat(
                 binding.wheelOverlay,
                 ALPHA,
                 1f
             ).apply {
                 doOnStart {
-                    binding.wheelOverlay.apply {
-                        overlayColor = WheelOverlayView.DEFAULT_OVERLAY_COLOR.toColorInt()
-                        overlayType = WheelOverlayView.OVERLAY_TYPE_PARTIAL
-                        isVisible = true
-                    }
+                    binding.wheelOverlay.isVisible=true
                     binding.glowView.apply {
                         showTopGlow = true
                         hideWithAnimation()
@@ -254,7 +250,7 @@ class LayoutsWheelView @JvmOverloads constructor(
 
         val propertyValueAnimator =
             ValueAnimator.ofPropertyValuesHolder(getRotationAnimationKeyFrameSet()).apply {
-            duration = rotationDuration
+                duration = rotationDuration
                 interpolator = PathInterpolator(0.15f, 1f, 0.8f, 1f)
                 doOnStart {
                     wheelListener?.onRotationStatusChanged(RotationStatus.ROTATION_STARTED)
@@ -266,17 +262,16 @@ class LayoutsWheelView @JvmOverloads constructor(
                     wheelListener?.onRotationStatusChanged(RotationStatus.ROTATION_CANCELLED)
                 }
 
-            addUpdateListener {
-                val updatedValue = (it.animatedValue as Float)
-                Log.d("arrow_anim","animation = $updatedValue")
-                binding.wheelContainer.rotation = updatedValue
-                onRotationValueUpdated(updatedValue, false)
+                addUpdateListener {
+                    val updatedValue = (it.animatedValue as Float)
+                    binding.wheelContainer.rotation = updatedValue
+                    onRotationValueUpdated(updatedValue, false)
+                }
             }
-        }
 
 
         val rotationAnimationSet = AnimatorSet()
-        rotationAnimationSet.playSequentially(propertyValueAnimator, alphaAnim)
+        rotationAnimationSet.playSequentially(propertyValueAnimator, offerRevealAlphaAnim)
         rotationAnimationSet.start()
     }
 
@@ -367,6 +362,8 @@ class LayoutsWheelView @JvmOverloads constructor(
         binding.wheelOverlay.apply {
             isVisible = false
             alpha = 0f
+            overlayColor = WheelOverlayView.DEFAULT_OVERLAY_COLOR.toColorInt()
+            overlayType = WheelOverlayView.OVERLAY_TYPE_PARTIAL
         }
     }
 

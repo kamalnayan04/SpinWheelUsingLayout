@@ -3,9 +3,10 @@ package com.kn.spinwheelpoc
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.RadialGradient
 import android.graphics.RectF
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
@@ -19,7 +20,22 @@ class WheelLoadingView @JvmOverloads constructor(
         private const val GREY_COLOR = "#adb5bd"
         private const val GREY_COLOR_LIGHT = "#dee2e6"
         private const val GREY_COLOR_MID = "#ced4da"
+        private const val GREY_COLOR_DARK_6 = "#6c757d"
+        private const val GREY_COLOR_DARK_7 = "#495057"
     }
+
+    var rimStrokeWidth = 20f
+        set(value) {
+            field = value
+            invalidate()
+        }
+    var itemsCount = 5
+        set(value) {
+            field = value
+            invalidate()
+        }
+    val rimSegments
+        get() = itemsCount * 10
 
     private var radius = 0f
     private var centerOfWheel = 0f
@@ -30,12 +46,31 @@ class WheelLoadingView @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
     private var selectedIndex = 0
-    var itemsCount = 5
-        set(value) {
-            field = value
-            postInvalidate()
-        }
 
+    private var centerDotPaint = Paint().apply {
+        isAntiAlias = true
+        isDither = true
+        style = Paint.Style.FILL
+    }
+
+    private val rimSegmentPaint = Paint().apply {
+        isAntiAlias = true
+        isDither = true
+        style = Paint.Style.STROKE
+        strokeWidth = rimStrokeWidth // Adjust for desired thickness
+        strokeCap = Paint.Cap.BUTT
+    }
+
+    private val centerShader by lazy {
+        RadialGradient(
+            centerOfWheel,
+            centerOfWheel,
+            20f,
+            colorList.toIntArray(),
+            floatArrayOf(0.2f, 0.8f, 1f),
+            Shader.TileMode.CLAMP
+        )
+    }
     private val rectF = RectF()
     private var colorIndex=0
 
@@ -43,11 +78,12 @@ class WheelLoadingView @JvmOverloads constructor(
         super.onDraw(canvas)
         val sweepAngle = 360f / itemsCount
         var startAngle = 0f
+        val circleRadius = (radius - rimStrokeWidth / 2)
         rectF.set(
-            centerOfWheel - (radius),
-            centerOfWheel - (radius),
-            centerOfWheel + (radius),
-            centerOfWheel + (radius),
+            centerOfWheel - (circleRadius),
+            centerOfWheel - (circleRadius),
+            centerOfWheel + (circleRadius),
+            centerOfWheel + (circleRadius),
         )
         (0 until itemsCount).forEach {
             if (selectedIndex == it) paint.color = colorList[1]
@@ -55,7 +91,31 @@ class WheelLoadingView @JvmOverloads constructor(
             startAngle += sweepAngle
             canvas.drawArc(rectF, startAngle, sweepAngle.toFloat(), true, paint)
         }
+        centerDotPaint.shader = centerShader
+        canvas.drawCircle(centerOfWheel, centerOfWheel, 20f, centerDotPaint)
         colorIndex = (colorIndex + 1) % colorList.size
+        drawRim(canvas)
+    }
+
+    private fun drawRim(canvas: Canvas) {
+
+        val segmentAngle = 360f / rimSegments
+        var startAngle = 0f
+        val rimRadius = (radius - rimStrokeWidth / 2)
+        rectF.set(
+            centerOfWheel - rimRadius,
+            centerOfWheel - rimRadius,
+            centerOfWheel + rimRadius,
+            centerOfWheel + rimRadius,
+        )
+        for (i in 0 until rimSegments) {
+            rimSegmentPaint.color =
+                if (i % 2 == 0) GREY_COLOR_DARK_6.toColorInt() else GREY_COLOR_DARK_7.toColorInt()
+            canvas.drawArc(
+                rectF, startAngle, segmentAngle, false, rimSegmentPaint
+            )
+            startAngle += segmentAngle
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

@@ -23,14 +23,19 @@ class DotsView @JvmOverloads constructor(
     var totalItems = 6
         set(value) {
             field = value
-            postInvalidate()
+            invalidate()
         }
 
-    private var margin = 25
+
     private var wheelRadius: Float = 0F
     private var centerOfWheel: Float = 0F
     val pointSize = resources.getDimensionPixelSize(R.dimen.dp36)
     var finalPointSize = 0
+    var margin = 25
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -44,27 +49,6 @@ class DotsView @JvmOverloads constructor(
         super.onDraw(canvas)
         drawPointsOverRim(canvas)
     }
-//    private fun drawPointsOverRim(canvas: Canvas) {
-//        val pointSize = resources.getDimensionPixelSize(R.dimen.dp36)
-//        val bitmap = getOptimizedBitmap(R.drawable.glare, pointSize) ?: return
-//
-//        val totalPointsCount = totalItems
-//        val angleStep = (2 * Math.PI / totalPointsCount).toFloat()
-//
-//        for (i in 0 until totalPointsCount) {
-//            val angle = i * angleStep
-//            val pointX = centerOfWheel + (wheelRadius-35) * cos(angle)
-//            val pointY = centerOfWheel + (wheelRadius-35) * sin(angle)
-//
-//            val pointRect = Rect(
-//                (pointX - pointSize / 2).toInt(),
-//                (pointY - pointSize / 2).toInt(),
-//                (pointX + pointSize / 2).toInt(),
-//                (pointY + pointSize / 2).toInt(),
-//            )
-//            canvas.drawBitmap(bitmap, null, pointRect, null)
-//        }
-//    }
 
     fun getInitialAngle() = 270 - (360 / totalItems)
     private fun drawPointsOverRim(canvas: Canvas) {
@@ -111,7 +95,6 @@ class DotsView @JvmOverloads constructor(
 
             inSampleSize = widthRatio.coerceAtLeast(heightRatio)
         }
-
 
         options.inJustDecodeBounds = false
         options.inSampleSize = inSampleSize

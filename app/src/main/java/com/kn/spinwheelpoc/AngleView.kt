@@ -31,7 +31,7 @@ class AngleView @JvmOverloads constructor(
         set(value) {
             field = value
             paint.color = field
-            postInvalidate()
+            invalidate()
         }
 
     val path = Path()
@@ -39,7 +39,7 @@ class AngleView @JvmOverloads constructor(
     var sweepDegree: Float = 90f
         set(value) {
             field = value
-            postInvalidate()
+            invalidate()
         }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
