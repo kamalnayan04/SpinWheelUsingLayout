@@ -2,12 +2,12 @@ package com.kn.spinwheelpoc.button
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.kn.spinwheelpoc.R
 import com.kn.spinwheelpoc.databinding.GlowingButtonLayoutBinding
 
 @SuppressLint("ClickableViewAccessibility")
@@ -19,16 +19,19 @@ class ThreeDGlowingButton @JvmOverloads constructor(
 
     private val binding = GlowingButtonLayoutBinding.inflate(LayoutInflater.from(context), this)
 
+    fun setText(text: String) {
+        binding.buttonText.text = text
+    }
     init {
 //        binding.glowView.style = Paint.Style.FILL
-        binding.mainImage.setOnTouchListener(object : OnTouchListener {
+        binding.root.setOnTouchListener(object : OnTouchListener {
             override fun onTouch(
                 v: View?,
                 event: MotionEvent?
             ): Boolean {
                 when (event?.action) {
                     MotionEvent.ACTION_DOWN -> {
-                        v?.animate()?.translationY(8f)?.setDuration(50)?.start()  // Push down
+                        v?.animate()?.translationY(resources.getDimension(R.dimen.dp8))?.setDuration(50)?.start()  // Push down
                         binding.imageBg.animate().alpha(0f).setDuration(70)
                             .start()  // Darken shadow
                     }

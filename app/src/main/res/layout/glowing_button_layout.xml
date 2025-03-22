@@ -10,7 +10,6 @@
         android:layout_width="@dimen/dp0"
         android:layout_height="50dp"
         android:background="@drawable/button_bg"
-        android:clickable="false"
         android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="@id/main_image"
         app:layout_constraintEnd_toEndOf="@id/main_image"
@@ -24,10 +23,25 @@
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/button_ig"
-        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/button_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/main_image"
+        app:layout_constraintEnd_toEndOf="@id/main_image"
+        app:layout_constraintStart_toStartOf="@id/main_image"
+        app:layout_constraintTop_toTopOf="@id/main_image"
+        tools:text="Spin" />
 
 </merge>

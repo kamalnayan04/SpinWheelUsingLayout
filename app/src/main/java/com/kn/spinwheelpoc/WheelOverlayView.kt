@@ -16,7 +16,7 @@ class WheelOverlayView @JvmOverloads constructor(
     companion object {
         const val OVERLAY_TYPE_FULL = 1
         const val OVERLAY_TYPE_PARTIAL = 0
-        private const val DEFAULT_OVERLAY_COLOR = "#B31B1B1B"
+        const val DEFAULT_OVERLAY_COLOR = "#B31B1B1B"
         const val ERROR_OVERLAY_COLOR = "#b3e9e2c9"
 
     }

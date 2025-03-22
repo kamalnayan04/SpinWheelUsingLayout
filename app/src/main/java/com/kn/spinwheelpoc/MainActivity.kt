@@ -2,6 +2,8 @@ package com.kn.spinwheelpoc
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         this.window.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
-        binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
+        binding.btnSpin.setText("Spin to ${binding.wheelView.target+1}")
         binding.btnSpin.setOnClickListener {
             if (binding.wheelView.isVisible)
             binding.wheelView.apply {
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                 target++
                 if (target==binding.wheelView.itemCount)
                     target=INVALID_TARGET
-                binding.btnSpin.text="Spin to ${binding.wheelView.target+1}"
+                binding.btnSpin.setText("Spin to ${binding.wheelView.target+1}")
             }else
                 binding.wheelLoading.startAnimating()
         }
@@ -65,10 +67,12 @@ class MainActivity : AppCompatActivity() {
                 override fun onRotationStatusChanged(rotationStatus: Int) {
                     when (rotationStatus) {
                         RotationStatus.ROTATION_STARTED -> {
+//                            binding.btnSpin.visbility=View.GONE
                             binding.statusText.text = "LET'S GO!"
                         }
 
                         RotationStatus.ROTATION_COMPLETED -> {
+//                            binding.btnSpin.visbility=View.VISIBLE
                             binding.statusText.text = "YOU WON!"
                         }
                     }

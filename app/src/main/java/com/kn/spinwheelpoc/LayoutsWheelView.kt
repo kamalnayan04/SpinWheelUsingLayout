@@ -66,7 +66,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         }
     }
 
-    var rotationDuration = 12000L
+    var rotationDuration = 14000L
     var wheelListener: WheelListener? = null
     private var previousAngle = 0f
     private var previousRadius = 0f
@@ -171,6 +171,7 @@ class LayoutsWheelView @JvmOverloads constructor(
             R.drawable.texture_light_blue,
             R.drawable.texture_yellow,
             R.drawable.texture_dark_blue,
+            R.drawable.texture_back
         )
 
     private val dotAngleList = arraySetOf<Int>()
@@ -221,11 +222,10 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     fun play() {
         if (isAnimating) return
+        isAnimating = true
         binding.dotsView.apply {
             animateDots()
         }
-//        return
-        isAnimating = true
         resetValues()
         val alphaAnim =
             ObjectAnimator.ofFloat(
@@ -235,6 +235,8 @@ class LayoutsWheelView @JvmOverloads constructor(
             ).apply {
                 doOnStart {
                     binding.wheelOverlay.apply {
+                        overlayColor = WheelOverlayView.DEFAULT_OVERLAY_COLOR.toColorInt()
+                        overlayType = WheelOverlayView.OVERLAY_TYPE_PARTIAL
                         isVisible = true
                     }
                     binding.glowView.apply {
@@ -294,7 +296,7 @@ class LayoutsWheelView @JvmOverloads constructor(
         val slowDownRotationFrame =
             Keyframe.ofFloat(0.85f, (totalRotation * 0.96f)) // Slow down earlier
         val verySlowEndFrame =
-            Keyframe.ofFloat(0.98f, (totalRotation * 1f)) // Almost final, very slow
+            Keyframe.ofFloat(0.975f, (totalRotation * 1f)) // Almost final, very slow
         val rotateToFinalPositionFrame =
             Keyframe.ofFloat(1f, finalPosition)     // Bounce back to actual position
 
@@ -336,8 +338,8 @@ class LayoutsWheelView @JvmOverloads constructor(
 
     private var arrowAnimDuration = 50L
     private fun animateArrow(speedMultiplier: Float) {
-
-        val finalDuration = (arrowAnimDuration * (speedMultiplier * .1) + arrowAnimDuration)
+        val speedOnScaleOfOne = (speedMultiplier * .1)
+        val finalDuration = (arrowAnimDuration * speedOnScaleOfOne + arrowAnimDuration)
         binding.pointerImage.apply {
             pivotX = width / 2f
             pivotY = height * 0.2f
